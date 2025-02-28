@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<!--Edyta Szymanska 251647-->
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gra w Wyścigi</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+        }
+        #game-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+        }
+        h1 {
+            font-size: 2em;
+            margin: 0 0 20px;
+            color: #e74c3c;
+            text-shadow: 2px 2px 4px #000;
+            text-align: center;
+        }
+        #game {
+            background-color: #2c3e50;
+            border: 5px solid #000;
+            position: relative;
+            overflow: hidden;
+            width: 400px;
+            height: 600px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            margin-right: 20px;
+        }
+        .sidebar {
+            max-width: 200px;
+            text-align: left;
+        }
+        .sidebar h2 {
+            color: #e67e22;
+            margin-bottom: 10px;
+        }
+        .sidebar ul {
+            list-style-type: square;
+            padding-left: 20px;
+        }
+        .sidebar li {
+            margin: 10px 0;
+        }
+        .car, .track, .obstacle {
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="game">
+            <!-- Elementy SVG będą ładowane tutaj -->
+        </div>
+        <div class="sidebar">
+            <h1>Gra w Wyścigi</h1>
+            <h2>Zasady:</h2>
+            <ul>
+                <li>Steruj samochodem strzałkami lewo/prawo oraz góra/dół.</li>
+                <li>Unikaj przeszkód na drodze.</li>
+                <li>Przejedź jak największy dystans.</li>
+                <li>Przeszkody pojawiają się coraz szybciej.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let graphics = [
+            new Image(), // Track
+            new Image(), // Player car
+            new Image(), // Red obstacle
+            new Image(), // Yellow obstacle
+            new Image(), // Green obstacle
+        ];
+
+        graphics[0].src = "images/droga.svg";
+        graphics[1].src = "images/auto_gracza.svg";
+        graphics[2].src = "images/czerwone_auto.svg";
+        graphics[3].src = "images/zolte_auto.svg";
+        graphics[4].src = "images/zielone_auto.svg";
+
+        graphics.forEach(image => {
+            image.onload = () => {
+                console.log(`Obraz ${image.src} załadowany`);
+            };
+            image.onerror = () => {
+                console.error(`Błąd podczas ładowania obrazu: ${image.src}`);
+            };
+        });
+
+        let keymap = { ArrowLeft: false, ArrowRight: false, ArrowUp: false, ArrowDown: false };
+        let carX = 180;
+        let carY = 500;
+        let distance = 0;
+        let obstacles = [];
+        let obstacleSpeed = 5;
+        let obstacleCreationSpeed = 1000;
+        let gameInterval;
+        let obstacleInterval;
+
+        const trackWidth = 400;
+        const trackHeight = 600;
+        const carWidth = 40;
+        const carHeight = 80;
+
+        document.addEventListener('keydown', function (e) {
+            if (keymap.hasOwnProperty(e.code)) {
+                keymap[e.code] = true;
+            }
+        });
+
+        document.addEventListener('keyup', function (e) {
+            if (keymap.hasOwnProperty(e.code)) {
+                keymap[e.code] = false;
+            }
+        });
+
+        function updateCarPosition() {
+            if (keymap.ArrowLeft && carX > 0) {
+                carX -= 5;
+            }
+            if (keymap.ArrowRight && carX < trackWidth - carWidth) {
+                carX += 5;
+            }
+            if (keymap.ArrowUp && carY > 0) {
+                carY -= 5;
+            }
+            if (keymap.ArrowDown && carY < trackHeight - carHeight) {
+                carY += 5;
+            }
+            const carElement = document.querySelector('.car');
+            if (carElement) {
+                carElement.style.transform = `translate(${carX}px, ${carY}px)`;
+            }
+        }
+
+        function createObstacle(type) {
+            const obstacle = new Image();
+            obstacle.src = graphics[type].src;
+            obstacle.className = 'obstacle';
+            obstacle.onload = () => {
+                obstacle.style.width = `${obstacle.naturalWidth}px`;
+                obstacle.style.height = `${obstacle.naturalHeight}px`;
+                obstacle.style.transform = `translate(${Math.random() * (trackWidth - obstacle.naturalWidth)}px, 0)`;
+
+                const gameContainer = document.getElementById('game');
+                gameContainer.appendChild(obstacle);
+                obstacles.push(obstacle);
+            };
+            obstacle.onerror = () => {
+                console.error(`Błąd podczas ładowania obrazu: ${obstacle.src}`);
+            };
+        }
+
+        function updateGame() {
+            distance += 1;
+            document.title = `Distance: ${distance}`;
+
+            updateCarPosition();
+
+            for (let i = 0; i < obstacles.length; i++) {
+                const obstacle = obstacles[i];
+                let obstacleX = parseInt(obstacle.style.transform.split('(')[1].split('px')[0]);
+                let obstacleY = parseInt(obstacle.style.transform.split(', ')[1].split('px')[0]);
+
+                obstacleY += obstacleSpeed;
+
+                if (obstacleY > trackHeight) {
+                    obstacle.remove();
+                    obstacles.splice(i, 1);
+                    i--;
+                } else {
+                    obstacle.style.transform = `translate(${obstacleX}px, ${obstacleY}px)`;
+                }
+
+                const carElement = document.querySelector('.car');
+                if (carElement) {
+                    const carRect = carElement.getBoundingClientRect();
+                    const obstacleRect = obstacle.getBoundingClientRect();
+                    if (
+                        carRect.x < obstacleRect.x + obstacleRect.width &&
+                        carRect.x + carRect.width > obstacleRect.x &&
+                        carRect.y < obstacleRect.y + obstacleRect.height &&
+                        carRect.height + carRect.y > obstacleRect.y
+                    ) {
+                        clearInterval(gameInterval);
+                        clearInterval(obstacleInterval);
+                        alert(`Game Over! Distance: ${distance}`);
+                    }
+                }
+            }
+        }
+
+        function initGame() {
+            const gameContainer = document.getElementById('game');
+
+            const track = graphics[0];
+            track.className = 'track';
+            track.onload = () => {
+                track.style.transform = 'translate(0, 0)';
+                track.style.width = '100%';
+                track.style.height = '100%';
+                gameContainer.appendChild(track);
+            };
+            track.onerror = () => {
+                console.error(`Błąd podczas ładowania obrazu: ${track.src}`);
+            };
+
+            const car = graphics[1];
+            car.className = 'car';
+            car.onload = () => {
+                car.style.width = `${carWidth}px`;
+                car.style.height = `${carHeight}px`;
+                car.style.transform = `translate(${carX}px, ${carY}px)`;
+                gameContainer.appendChild(car);
+            };
+            car.onerror = () => {
+                console.error(`Błąd podczas ładowania obrazu: ${car.src}`);
+            };
+
+            gameInterval = setInterval(updateGame, 50);
+            obstacleInterval = setInterval(() => {
+                const random = Math.random();
+                let type = 2;
+                if (random > 0.6 && random <= 0.8) type = 3;
+                else if (random > 0.8) type = 4;
+                createObstacle(type);
+            }, obstacleCreationSpeed);
+            setInterval(increaseDifficulty, 5000);
+        }
+
+        function increaseDifficulty() {
+            if (obstacleCreationSpeed > 200) {
+                obstacleCreationSpeed -= 50;
+                clearInterval(obstacleInterval);
+                obstacleInterval = setInterval(() => {
+                    const random = Math.random();
+                    let type = 2;
+                    if (random > 0.6 && random <= 0.8) type = 3;
+                    else if (random > 0.8) type = 4;
+                    createObstacle(type);
+                }, obstacleCreationSpeed);
+            }
+            obstacleSpeed += 0.5;
+        }
+
+        function mainLoop() {
+            initGame();
+        }
+
+        mainLoop();
+    </script>
+</body>
+</html>

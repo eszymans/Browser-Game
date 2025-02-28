@@ -1,0 +1,25 @@
+<svg width="40" height="80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 125 250">
+  <!-- Korpus samochodu -->
+  <rect x="2.4" y="3" rx="10" ry="10" width="120.8" height="161.6" fill="green" stroke="black" stroke-width="2"/>
+  
+  <!-- Szyby samochodu -->
+  <rect x="32.5" y="12.5" rx="5" ry="5" width="60" height="40" fill="skyblue" stroke="black" stroke-width="1"/>
+  <rect x="32.5" y="115" rx="5" ry="5" width="60" height="40" fill="skyblue" stroke="black" stroke-width="1"/>
+  <rect x="31.3" y="63.9" rx="5" ry="5" width="62.5" height="40" fill="skyblue" stroke="black" stroke-width="1"/>
+  
+  <!-- Opony -->
+  <ellipse fill="black" cx="6.3" cy="37.1" rx="7.5" ry="20"/>
+  <ellipse fill="black" cx="6.8" cy="152.8" rx="7.5" ry="20"/>
+  <ellipse fill="black" cx="121.9" cy="40.7" rx="7.5" ry="20"/>
+  <ellipse fill="black" cx="118.2" cy="151.8" rx="7.5" ry="20"/>
+  
+  <!-- Reflektory -->
+  <circle stroke-width="1" fill="yellow" stroke="black" cx="18" cy="12.7" r="5"/>
+  <circle stroke-width="1" fill="yellow" stroke="black" cx="107" cy="11.6" r="5"/>
+  
+  <!-- Detale -->
+  <rect stroke-width="1" fill="grey" stroke="black" x="33" y="46.4" width="60" height="10"/>
+  <rect stroke-width="1" fill="grey" stroke="black" x="33" y="112.2" width="60" height="10"/>
+  <rect stroke-width="2" fill="green" stroke="black" x="2.5" y="180" width="120" height="70" rx="10" ry="10"/>
+  <ellipse fill="black" cx="59.4" cy="171.5" rx="7.5" ry="15"/>
+</svg>

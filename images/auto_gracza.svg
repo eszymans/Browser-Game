@@ -1,0 +1,27 @@
+<svg width="40" height="80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 125 250">
+  <!-- Korpus samochodu -->
+  <rect x="6.5" y="2.5" rx="10" ry="10" width="112" height="243" fill="blue" stroke="black" stroke-width="2"/>
+  
+  <!-- Szyby samochodu -->
+  <rect x="20" y="20" rx="5" ry="5" width="85" height="57" fill="skyblue" stroke="black" stroke-width="1"/>
+  <rect x="20.5" y="170" rx="5" ry="5" width="85" height="64" fill="skyblue" stroke="black" stroke-width="1"/>
+  <rect x="20" y="93.5" rx="5" ry="5" width="10" height="68" fill="skyblue" stroke="black" stroke-width="1"/>
+  <rect x="95" y="95" rx="5" ry="5" width="10" height="67.5" fill="skyblue" stroke="black" stroke-width="1"/>
+  
+  <!-- Opony -->
+  <ellipse rx="7.5" ry="20" cx="3.8" cy="47.6" fill="black"/>
+  <ellipse rx="7.5" ry="20" cx="5" cy="212.7" fill="black"/>
+  <ellipse rx="7.5" ry="20" cx="118.4" cy="46.4" fill="black"/>
+  <ellipse rx="7.5" ry="20" cx="120" cy="210.4" fill="black"/>
+
+  <!-- Reflektory -->
+  <circle cx="17.5" cy="14.5" r="5" fill="yellow" stroke="black" stroke-width="1"/>
+  <circle cx="107.5" cy="14.5" r="5" fill="yellow" stroke="black" stroke-width="1"/>
+
+  <!-- Lusterka boczne -->
+  <!--Detale-->
+  <rect stroke-width="1" fill="grey" stroke="black" x="20" y="68" width="85" height="10"/>
+  <rect stroke-width="1" fill="grey" stroke="black" x="20" y="168" width="85" height="10"/>
+  
+  <rect x="35" y="88.5" width="55" height="74" fill="none" stroke="black" stroke-width="1"/>
+</svg>

@@ -31,4 +31,33 @@ To run this game, you only need a web browser that supports HTML5 and JavaScript
     - Open the `index.html` file in your browser.
 
 ## File Structure
+/index.html                - Main HTML file with game code
+/images/                   - Folder containing images (SVG) used in the game
+    - track.svg            - Track image
+    - player_car.svg       - Player's car image
+    - red_car.svg          - Red obstacle image
+    - yellow_car.svg       - Yellow obstacle image
+    - green_car.svg        - Green obstacle image
+/style.css                 - CSS file defining styles (colors, layout)
+/script.js                 - JavaScript file containing the game logic
+
+
+## How to Play?
+
+1. Launch the game in your browser.
+2. Control the car using the arrow keys:
+   - **Left arrow** – turn left.
+   - **Right arrow** – turn right.
+   - **Up arrow** – accelerate.
+   - **Down arrow** – slow down.
+3. Avoid obstacles on the road that will appear as you drive further.
+4. The goal is to drive as far as possible without crashing into obstacles.
+
+## License
+
+This project is open-source and available under the MIT License. You can freely modify and distribute the project, as long as you retain the authorship information.
+
+## Authors
+
+- Edyta Szymańska
 
